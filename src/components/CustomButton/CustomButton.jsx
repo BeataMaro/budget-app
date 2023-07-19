@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { theme } from '../../theme.js';
-import { Button } from '@mui/material';
+import { Button, Link } from '@mui/material';
 
 const customButtonStyle = {
   boxShadow: 1,
@@ -43,8 +43,13 @@ const customButtonStyle = {
 
 CustomButton.propTypes = {
   children: PropTypes.string,
+  url: PropTypes.string,
 };
 
-export default function CustomButton({ children }) {
-  return <Button sx={customButtonStyle}>{children}</Button>;
+export default function CustomButton({ children, url }) {
+  return (
+    <Button sx={customButtonStyle} component={Link} href={url}>
+      {children}
+    </Button>
+  );
 }

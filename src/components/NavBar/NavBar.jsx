@@ -28,11 +28,11 @@ const hoverStyles = {
 
 const drawerWidth = 260;
 const navItems = [
-  { title: 'Expenses', icon: 'dashboard', link: '/expenses' },
-  { title: 'Reports', icon: 'monitoring', link: '/reports' },
+  { title: 'Expenses', icon: 'dashboard', link: '/expenses', display: 'none' },
+  { title: 'Reports', icon: 'monitoring', link: '/reports', display: 'none' },
   { title: 'Profile', icon: 'person_3', link: '/profile' },
   { title: 'Settings', icon: 'settings', link: '/settings' },
-  { title: 'Log out', icon: 'logout', link: '#' },
+  { title: 'Log out', icon: 'logout', link: '/' },
 ];
 
 NavBar.propTypes = {
@@ -47,7 +47,7 @@ export default function NavBar({ window }) {
 
   const drawer = (
     <Box component='nav' onClick={handleDrawerToggle}>
-      <Typography variant='h6' sx={{ my: 2, fontWeight: 800 }}>
+      <Typography component={Link} href='/' variant='h6' sx={{ my: 2, fontWeight: 800 }}>
         <IconButton className='material-symbols-outlined'>savings</IconButton>
         Budget
       </Typography>
@@ -71,8 +71,8 @@ export default function NavBar({ window }) {
 
   return (
     <Box component='header' sx={{ display: 'flex' }}>
-      <AppBar component='nav' sx={{ px: 4, position: 'static' }}>
-        <Toolbar>
+      <AppBar component='nav' sx={{ px: 4, position: 'fixed' }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between'}}>
           <Icon
             aria-label='open drawer'
             edge='start'
@@ -82,25 +82,26 @@ export default function NavBar({ window }) {
           >
             menu
           </Icon>
-          <Typography
-            variant='h4'
-            component='h1'
-            sx={{
-              flexGrow: 1,
-              display: { mobile: 'none', desktop: 'block' },
-              color: theme.palette.secondary.main,
-            }}
-          >
+          <Box sx={{ display: 'flex', textDecoration: 'none' }} component={Link} href='/'>
             <IconButton className='material-symbols-outlined'>savings</IconButton>
-            Budget
-          </Typography>
-
-          <Box>
+            <Typography
+              variant='h4'
+              component='h1'
+              sx={{
+                flexGrow: 1,
+                display: { mobile: 'none', desktop: 'block' },
+                color: theme.palette.secondary.main,
+              }}
+            >
+              Budget
+            </Typography>
+          </Box>
+          <Box sx={{ display: { mobile: 'none', desktop: 'flex'} }}> 
             <List sx={{ display: { mobile: 'none', desktop: 'flex', justifyContent: 'center' } }}>
               {navItems.map(({ title, icon, link }, idx) => (
                 <ListItem key={idx} sx={{ px: 0 }}>
                   <ListItemButton component={Link} to={link} sx={hoverStyles}>
-                    <ListItemText primary={title} sx={{ mr: 4, whiteSpace: 'nowrap' }} />
+                    <ListItemText primary={title} sx={{ mr: 3, whiteSpace: 'nowrap' }} />
                   </ListItemButton>
                   <ListItemIcon
                     sx={{ cursor: 'pointer', ml: -3 }}

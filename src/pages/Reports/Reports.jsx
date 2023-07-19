@@ -11,7 +11,7 @@ export default function Reports() {
         justifyContent: 'space-around',
         alignItems: 'center',
         py: 4,
-        my: 4,
+        mt: 6,
       }}
     >
       <Box

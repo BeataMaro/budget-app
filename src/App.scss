@@ -34,11 +34,11 @@ html {
   scroll-behavior: smooth;
 }
 
-body {
-  @include desktop() {
-    margin: 0 calc(100vw - 90%);
-  }
-}
+// body {
+//   @include desktop() {
+//     margin: 0 calc(100vw - 90%);
+//   }
+// }
 
 ::selection {
   background-color: $mdc-theme-primary;

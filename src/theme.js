@@ -26,7 +26,8 @@ export const theme = createTheme({
   breakpoints: {
     values: {
       mobile: 320,
-      desktop: 768,
+      tablet: 768,
+      desktop: 1000,
       
     },
   },
@@ -42,7 +43,6 @@ export const darkTheme = createTheme({
 export const Wrapper = experimentalStyled(Paper)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  padding: '0 10vw',
   justifyContent: 'space-around',
   minHeight: '100vh',
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',

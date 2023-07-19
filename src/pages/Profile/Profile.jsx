@@ -21,6 +21,7 @@ export default function Profile() {
         component='img'
         sx={{
           borderRadius: '2px',
+          mt: 6,
           transition: 'transform 0.7s cubic-bezier(0.52, 1.64, 0.37, 0.66), color 0.4s',
           '&:hover': {
             transform: 'scale(1.1)',
