@@ -1,0 +1,13 @@
+{
+  "expenses": [
+    { "id": "1", "name": "coffee", "category": "food", "amount": "40", "date": "2022-07-16" },
+    { "id": "2", "name": "bread", "category": "food", "amount": "8", "date": "2022-08-03" },
+    { "id": "3", "name": "cheese", "category": "food", "amount": "21", "date": "2022-08-03" },
+    { "id": "4", "name": "fuel", "category": "car", "amount": "320", "date": "2022-08-14" },
+    { "id": "5", "name": "bread", "category": "food", "amount": "8", "date": "2022-09-01" },
+    { "id": "6", "name": "ham", "category": "food", "amount": "14", "date": "2022-09-01" },
+    { "id": "7", "name": "butter", "category": "food", "amount": "6", "date": "2022-09-10" },
+    { "id": "8", "name": "fuel", "category": "car", "amount": "320", "date": "2022-09-10" },
+    { "id": "9", "name": "car wash", "category": "car", "amount": "60", "date": "2022-09-10" }
+  ]
+}
