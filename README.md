@@ -12,7 +12,7 @@ This is a web application that allows users to analyze and store information abo
 To install and run the application locally, follow these steps:
 
 1. Clone the repository: `git clone <repository-url>`
-2. Navigate to the project directory: `cd budget`
+2. Navigate to the project directory: `cd budget-app`
 3. Install dependencies: `npm install`
 4. Start the application: `npm run dev`
 5. Open your web browser and visit `http://localhost:5173` to access the application.
