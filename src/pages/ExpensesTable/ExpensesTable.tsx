@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  FormControl,
   Icon,
   IconButton,
-  Input,
-  InputAdornment,
-  InputLabel,
   Paper,
   Table,
   TableBody,
@@ -16,10 +12,12 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import AddExpense from '../../components/AddExpenseForm/AddExpenseForm.tsx';
 import IExpense from '../../models/expense.ts';
 import FilterByCategory from '../../components/FilterByCategory/FilterByCategory.tsx';
 import Total from '../../components/Total/Total.tsx';
+import SearchForm from '../../components/SearchForm/SearchForm.tsx';
+import AddExpenseForm from '../../components/AddExpenseForm/AddExpenseForm.tsx';
+import ToggleFiltersIcon from '../../components/ToggleFiltersIcon/ToggleFiltersIcon.tsx';
 
 interface ExpensesTableProps {
   state: IExpense[];
@@ -90,50 +88,15 @@ export default function ExpensesTable({ state }: ExpensesTableProps) {
 
   return (
     <Box id="expensesTable" component="section">
-      <AddExpense handleAddingNewExpense={addNewExpense} />
-      <Paper sx={{ p: 3 }}>
-        <FormControl sx={{
-          p: 2, mt: 5, display: 'flex', alignItems: 'flex-end',
-        }}
-        >
-          <IconButton
-            className="material-symbols-outlined"
-            onClick={() => setFiltersOpened((prev) => !prev)}
-            sx={{ cursor: 'pointer' }}
-          >
-            filter_list
-          </IconButton>
-        </FormControl>
-
-        {filtersOpened && (
-          <Box
-            sx={{
-              display: { xs: 'grid', xl: 'flex' },
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
-            <FormControl sx={{ mr: 3 }}>
-              <InputLabel htmlFor="search-expense">Find expenses</InputLabel>
-              <Input
-                id="search-expense"
-                type="search"
-                placeholder="Search"
-                sx={{ px: 2, py: 1 }}
-                margin="dense"
-                startAdornment={(
-                  <InputAdornment position="start">
-                    <Icon>
-                      <span className="material-symbols-outlined">search</span>
-                    </Icon>
-                  </InputAdornment>
-              )}
-                onChange={(e) => filterByName(e.target.value)}
-              />
-            </FormControl>
-            <FilterByCategory handleFilteringByCategory={handleFilteringByCategory} />
-          </Box>
-        )}
+      <AddExpenseForm handleAddingNewExpense={addNewExpense} />
+      <ToggleFiltersIcon handleToggleFilters={setFiltersOpened} />
+      {filtersOpened && (
+        <Paper>
+          <SearchForm handleSearch={filterByName} />
+          <FilterByCategory handleFilteringByCategory={handleFilteringByCategory} />
+        </Paper>
+      )}
+      <Paper>
         <TableContainer component={Paper}>
           <Typography variant="h4" sx={{ m: 3 }}>
             Expenses
