@@ -20,19 +20,6 @@ export default function FilterByCategory({ handleFilteringByCategory }: ISelectC
     const selectedValue = event.target.value;
     setCategory(event.target.value);
     handleFilteringByCategory(selectedValue);
-
-    // setCategory(val);
-    // console.log(selectedCategory);
-    // handleFilteringByCategory(selectedCategory);
-
-    // if (val.toLowerCase() === 'all') {
-    //   setExpenses([...state]);
-    // } else {
-    // /* eslint-disable max-len, react/destructuring-assignment */
-    //   const filteredRows = state.filter((row: IExpense) =>
-    // row.category.toLowerCase() === val.toLowerCase());
-    //   setExpenses(filteredRows);
-    // }
   };
 
   useEffect(() => {
