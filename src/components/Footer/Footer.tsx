@@ -1,10 +1,13 @@
-import { theme } from '../../theme.js';
-import { Box, Link, Typography } from '@mui/material';
+import React from 'react';
+import {
+  Box, Link, Typography,
+} from '@mui/material';
+import { theme } from '../../theme.tsx';
 
 export default function Footer() {
   return (
     <Box
-      component='footer'
+      component="footer"
       sx={{
         padding: theme.spacing(3),
         justifySelf: 'flex-end',
@@ -13,13 +16,14 @@ export default function Footer() {
         backgroundColor: theme.palette.secondary.onSecondary,
       }}
     >
-      <Typography variant='body2' color='#fff' align='center' gutterBottom>
+      <Typography variant="body2" color="#fff" align="center" gutterBottom>
         {'Copyright © '}
-        <Link href='https://github.com/BeataMaro'>
+        <Link href="https://github.com/BeataMaro">
           Beata Maro
-        </Link>{' '}
+        </Link>
+        {' '}
         {new Date().getFullYear()}
-        {'.'}
+        .
       </Typography>
     </Box>
   );

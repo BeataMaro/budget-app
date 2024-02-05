@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
-import { theme } from '../../theme.js';
+import React, { ReactElement, ReactNode, ReactPortal } from 'react';
 import { Button, Link } from '@mui/material';
+import { theme } from '../../theme.tsx';
 
 const customButtonStyle = {
   boxShadow: 1,
@@ -41,12 +41,17 @@ const customButtonStyle = {
   },
 };
 
-CustomButton.propTypes = {
-  children: PropTypes.string,
-  url: PropTypes.string,
-};
+type ReactText = string | number;
+type ReactChild = ReactElement | ReactText;
 
-export default function CustomButton({ children, url }) {
+type ReactNodeType = ReactChild | ReactNode | ReactPortal | boolean | null | undefined;
+
+type CustomButtonProps = {
+  children: ReactNodeType,
+  url: string,
+}
+
+export default function CustomButton({ children, url }: CustomButtonProps) {
   return (
     <Button sx={customButtonStyle} component={Link} href={url}>
       {children}

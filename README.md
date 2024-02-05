@@ -22,4 +22,5 @@ To install and run the application locally, follow these steps:
 The following technologies and libraries are used in this application:
 
 - React: A JavaScript library for building user interfaces.
+- TypeScript: A superset of JavaScript that adds static typing to the language. 
 - Material UI: A popular UI library for React that provides pre-designed components and styles.
