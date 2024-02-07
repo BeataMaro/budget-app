@@ -64,7 +64,7 @@ export default function Dashboard() {
                 transform: 'scale(.7)',
                 transition: 'transform 0.7s cubic-bezier(0.52, 1.64, 0.37, 0.66), color 0.4s',
               }}
-              src="./src/assets/undraw_flying_drone_u3r2.svg"
+              src="undraw_flying_drone_u3r2.svg"
               alt="woman controlling a drone"
             />
             <CustomButton url="/expenses">See more</CustomButton>

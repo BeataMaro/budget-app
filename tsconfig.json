@@ -17,7 +17,7 @@
       "noEmit": true,
       "jsx": "react-jsx"
     },
-    "include": ["src", "src/svg.d.ts"],
+    "include": ["src", "src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"],
     "references": [{ "path": "./tsconfig.node.json" }],
     "types": ["vitest/globals"],
   }
