@@ -4,6 +4,6 @@ import svgr from 'vite-plugin-svgr';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/budget/',
+  // base: '/budget-app/',
   plugins: [react(), svgr()],
 });
