@@ -5,6 +5,8 @@ import {
 import Grid from '@mui/material/Grid';
 import CustomButton from '../../components/CustomButton/CustomButton.tsx';
 import ChartIcon from '../../assets/undraw_analysis_chartIcon.tsx';
+import DroneIcon from '../../assets/undraw_flying_droneIcon.tsx';
+import TripIcon from '../../assets/undraw_tripIcon.tsx';
 
 const DashboardCard = experimentalStyled(Paper)(({ theme }) => ({
   backgroundColor: 'transparent',
@@ -17,7 +19,13 @@ const DashboardCard = experimentalStyled(Paper)(({ theme }) => ({
   justifyContent: 'center',
   cursor: 'pointer',
 
-  '&:hover img': {
+  '& > svg': {
+    transform: 'scale(.7)',
+    transition: 'transform 0.7s cubic-bezier(0.52, 1.64, 0.37, 0.66), color 0.4s',
+    cursor: 'pointer',
+  },
+
+  '&:hover svg': {
     transform: 'scale(1)',
   },
 }));
@@ -36,37 +44,14 @@ export default function Dashboard() {
         <Grid item sm={6} md={3} xl={2} display="flex" justifyContent="center">
           <DashboardCard>
             <Typography variant="h4">Statistics</Typography>
-            {/* <Box
-              component="img"
-              sx={{
-                objectFit: 'cover',
-                transform: 'scale(.7)',
-                transition: 'transform 0.7s cubic-bezier(0.52, 1.64, 0.37, 0.66), color 0.4s',
-              }}
-              src="./src/assets/undraw_analysis_dq08.svg"
-              alt="chart"
-            /> */}
-            {/* <IconButton aria-label="Chart icon">
-              <SvgIcon> */}
             <ChartIcon />
-            {/* </SvgIcon> */}
-            {/* </IconButton> */}
             <CustomButton url="/reports">See more</CustomButton>
           </DashboardCard>
         </Grid>
         <Grid item sm={6} md={3} xl={2} display="flex" justifyContent="center">
           <DashboardCard>
             <Typography variant="h4">Expenses</Typography>
-            <Box
-              component="img"
-              sx={{
-                objectFit: 'contain',
-                transform: 'scale(.7)',
-                transition: 'transform 0.7s cubic-bezier(0.52, 1.64, 0.37, 0.66), color 0.4s',
-              }}
-              src="undraw_flying_drone_u3r2.svg"
-              alt="woman controlling a drone"
-            />
+            <DroneIcon />
             <CustomButton url="/expenses">See more</CustomButton>
           </DashboardCard>
         </Grid>
@@ -75,16 +60,8 @@ export default function Dashboard() {
             <Typography variant="h4">
               Multiply your savings and make your dreams come true
             </Typography>
-            <Box
-              component="img"
-              sx={{
-                objectFit: 'contain',
-                transform: 'scale(.7)',
-                transition: 'transform 0.7s cubic-bezier(0.52, 1.64, 0.37, 0.66), color 0.4s',
-              }}
-              src="./src/assets/undraw_trip_re_f724.svg"
-              alt="man and woman sitting on the top of a car"
-            />
+            <TripIcon />
+            <CustomButton url="/profile">See more</CustomButton>
           </DashboardCard>
         </Grid>
       </Grid>

@@ -1,6 +1,4 @@
 import React from 'react';
-// import { promises as fsPromises } from 'fs';
-// import { join } from 'path';
 import { RouteObject } from 'react-router-dom';
 import Layout from './components/Layout/Layout.tsx';
 import Dashboard from './pages/Dashboard/Dashboard.tsx';

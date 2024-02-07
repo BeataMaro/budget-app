@@ -63,7 +63,7 @@ export default function NavBar() {
     <Box component="nav" onClick={handleDrawerToggle}>
       <Typography component={Link} href="/" variant="h6" sx={{ my: 2, fontWeight: 800 }}>
         <IconButton className="material-symbols-outlined">savings</IconButton>
-        Budget
+        Smart Piggy Bank
       </Typography>
       <Divider />
       <List>
@@ -109,7 +109,7 @@ export default function NavBar() {
                 color: theme.palette.secondary.main,
               }}
             >
-              Budget
+              Smart Piggy Bank
             </Typography>
           </Box>
           <Box sx={{ display: { xs: 'none', xl: 'flex' } }}>

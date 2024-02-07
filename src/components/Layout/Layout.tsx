@@ -6,7 +6,7 @@ import Wrapper from '../../StyledWrapper.tsx';
 
 export default function Layout() {
   return (
-    <Wrapper>
+    <Wrapper sx={{ width: { md: '80vw' } }}>
       <NavBar />
       <Outlet />
       <Footer />
