@@ -91,7 +91,10 @@ export default function ExpensesTable({ state }: ExpensesTableProps) {
       <AddExpenseForm handleAddingNewExpense={addNewExpense} />
       <ToggleFiltersIcon handleToggleFilters={setFiltersOpened} />
       {filtersOpened && (
-        <Paper>
+        <Paper sx={{
+          display: 'flex', p: 4, flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'center', alignItems: { md: 'center' },
+        }}
+        >
           <SearchForm handleSearch={filterByName} />
           <FilterByCategory handleFilteringByCategory={handleFilteringByCategory} />
         </Paper>

@@ -83,7 +83,9 @@ function AddExpenseForm({ handleAddingNewExpense }: AddExpenseProps) {
       autoComplete="off"
       name="newExpenseForm"
       noValidate
-      sx={{ mt: 6, pt: 5 }}
+      sx={{
+        display: 'flex', p: 4, flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'center', alignItems: { md: 'center' },
+      }}
       onSubmit={(e) => addNewExpense(e)}
     >
       <TextField
