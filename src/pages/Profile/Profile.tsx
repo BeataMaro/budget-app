@@ -1,10 +1,13 @@
-import {Box, Paper, Typography } from '@mui/material';
+import React from 'react';
+import {
+  Box, Paper, Typography,
+} from '@mui/material';
 
 export default function Profile() {
   return (
     <Paper
-      component='section'
-      id='profileSection'
+      component="section"
+      id="profileSection"
       sx={{
         display: 'flex',
         justifyContent: 'space-around',
@@ -14,11 +17,11 @@ export default function Profile() {
         my: 4,
       }}
     >
-      <Typography variant='h5' sx={{ my: 3}} component='h2'>
+      <Typography variant="h5" sx={{ my: 3 }} component="h2">
         Profile
       </Typography>
       <Box
-        component='img'
+        component="img"
         sx={{
           borderRadius: '2px',
           mt: 6,
@@ -27,8 +30,8 @@ export default function Profile() {
             transform: 'scale(1.1)',
           },
         }}
-        src='./src/assets/undraw_personal_info_re_ur1n.svg'
-        alt='User'
+        src="./src/assets/undraw_personal_info_re_ur1n.svg"
+        alt="User"
       />
     </Paper>
   );

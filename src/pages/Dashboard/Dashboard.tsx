@@ -4,6 +4,7 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import CustomButton from '../../components/CustomButton/CustomButton.tsx';
+import ChartIcon from '../../assets/undraw_analysis_chartIcon.tsx';
 
 const DashboardCard = experimentalStyled(Paper)(({ theme }) => ({
   backgroundColor: 'transparent',
@@ -35,7 +36,7 @@ export default function Dashboard() {
         <Grid item sm={6} md={3} xl={2} display="flex" justifyContent="center">
           <DashboardCard>
             <Typography variant="h4">Statistics</Typography>
-            <Box
+            {/* <Box
               component="img"
               sx={{
                 objectFit: 'cover',
@@ -44,7 +45,12 @@ export default function Dashboard() {
               }}
               src="./src/assets/undraw_analysis_dq08.svg"
               alt="chart"
-            />
+            /> */}
+            {/* <IconButton aria-label="Chart icon">
+              <SvgIcon> */}
+            <ChartIcon />
+            {/* </SvgIcon> */}
+            {/* </IconButton> */}
             <CustomButton url="/reports">See more</CustomButton>
           </DashboardCard>
         </Grid>
