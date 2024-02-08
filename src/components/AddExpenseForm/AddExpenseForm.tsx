@@ -84,7 +84,7 @@ function AddExpenseForm({ handleAddingNewExpense }: AddExpenseProps) {
       name="newExpenseForm"
       noValidate
       sx={{
-        display: 'flex', p: 4, flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'center', alignItems: { md: 'center' },
+        display: 'flex', p: 4, mt: '6rem', flexDirection: { xs: 'column', lg: 'row' }, justifyContent: 'center', gap: '1rem', alignItems: { lg: 'center' },
       }}
       onSubmit={(e) => addNewExpense(e)}
     >

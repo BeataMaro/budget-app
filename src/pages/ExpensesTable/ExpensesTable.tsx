@@ -92,7 +92,7 @@ export default function ExpensesTable({ state }: ExpensesTableProps) {
       <ToggleFiltersIcon handleToggleFilters={setFiltersOpened} />
       {filtersOpened && (
         <Paper sx={{
-          display: 'flex', p: 4, flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'center', alignItems: { md: 'center' },
+          display: 'flex', p: 4, flexDirection: { xs: 'column', lg: 'row' }, justifyContent: 'center', alignItems: { lg: 'center' }, gap: '1rem',
         }}
         >
           <SearchForm handleSearch={filterByName} />

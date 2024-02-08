@@ -30,7 +30,7 @@ export default function FilterByCategory({ handleFilteringByCategory }: ISelectC
   }, [categories]);
 
   return (
-    <FormControl sx={{ my: 3 }}>
+    <FormControl sx={{ my: 3, minWidth: '4rem' }}>
       <InputLabel htmlFor="categorySelect" id="categoryFilter">
         Category
       </InputLabel>
