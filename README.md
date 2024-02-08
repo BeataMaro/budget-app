@@ -1,6 +1,6 @@
-### Budget app
+## [Smart Piggy Bank site demo](https://smart-piggy-bank.netlify.app/)
 
-This is a web application that allows users to analyze and store information about their expenses. It is built using the Material UI library and standalone React.
+This is a web application that allows users to analyze and store information about their expenses. It is built using the Material UI library, React and TypeScript.
 
 #### Features
 
