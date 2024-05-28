@@ -12,36 +12,49 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import IExpense from '../../models/expense.ts';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Expense from '../../models/expense.ts';
 import FilterByCategory from '../../components/FilterByCategory/FilterByCategory.tsx';
 import Total from '../../components/Total/Total.tsx';
 import SearchForm from '../../components/SearchForm/SearchForm.tsx';
-import AddExpenseForm from '../../components/AddExpenseForm/AddExpenseForm.tsx';
 import ToggleFiltersIcon from '../../components/ToggleFiltersIcon/ToggleFiltersIcon.tsx';
+import useLocalStorage from '../../ libs/hooks/useLocalStorage.tsx';
+import useStateContext from '../../ libs/hooks/useStateContext.tsx';
+import NewExpenseForm from '../../components/NewExpenseForm/NewExpenseForm.tsx';
 
-interface ExpensesTableProps {
-  state: IExpense[];
-}
+export default function ExpensesTable() {
+  const { state, setState } = useStateContext();
+  const { expenses, categories } = state;
+  // const [localExpenses, setLocalExpenses] =
+  // useLocalStorage<Expense[]>('expenses', state.expenses);
+  const [localExpenses, setLocalExpenses] = useLocalStorage<Expense[]>('expenses', expenses);
+  const [filtersOpened, setFiltersOpened] = useState(true);
+  const [filtering, setFiltering] = useState(false);
 
-export default function ExpensesTable({ state }: ExpensesTableProps) {
-  const storedExpenses = localStorage.getItem('expenses');
-  const parsedExpenses = storedExpenses ? JSON.parse(storedExpenses) : state;
+  const [categoryFilter] = useState('');
+  const [filteredExpenses,
+    setFilteredExpenses] = useState<Expense[]>(expenses);
 
-  const [filtersOpened, setFiltersOpened] = useState<boolean>(true);
-  const [newCategory, setNewCategory] = useState<string>('');
-  const [expenses, setExpenses] = useState<IExpense[]>([...parsedExpenses]);
   // const [startDate, setStartDate] = useState('2022-07-16');
   // const [endDate, setEndDate] = useState('2022-09-10');
 
-  useEffect(() => {
-    if (newCategory.toLowerCase() === 'all') {
-      setExpenses([...parsedExpenses]);
-    }
-  }, [newCategory, parsedExpenses]);
+  useEffect(
+    () => {
+      console.log(localExpenses);
+      console.log('expenses', expenses);
+      if (categoryFilter.toLowerCase() === 'all') {
+        setFilteredExpenses(expenses);
+        console.log('All!');
+      }
+      // setFilteredExpenses(expenses);
+      // console.log(expenses, categories);
+    },
+    [state, filteredExpenses, expenses, categoryFilter, categories, localExpenses],
+  );
 
-  function sortTable(data: IExpense[], direction: string | undefined): IExpense[] {
+  function sortTable(data: Expense[], direction?: string): Expense[] {
     if (direction === 'up') {
-      return data.sort((a: IExpense, b: IExpense) => Number(a.amount) - Number(b.amount));
+      return data.sort((a: Expense, b: Expense) => Number(a.amount) - Number(b.amount));
     }
     if (direction === 'down') {
       return data.sort((a, b) => Number(b.amount) - Number(a.amount));
@@ -49,54 +62,74 @@ export default function ExpensesTable({ state }: ExpensesTableProps) {
     return data;
   }
 
-  function handleSortDirection(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  function handleDeleteExpense(rowId: string) {
+    setLocalExpenses([...expenses].filter((exp: Expense) => exp.id !== rowId));
+    setState({
+      expenses: [...expenses].filter((exp: Expense) => exp.id !== rowId),
+      categories: [...categories],
+    });
+  }
+
+  function handleSortDirectionByPrice(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     const target = e.target as HTMLButtonElement;
 
     sortTable(expenses, target.dataset.sort);
-    setExpenses([...expenses]);
+    setFilteredExpenses([...expenses]);
   }
 
-  const handleFilteringByCategory = (val: string) => {
-    setNewCategory(val);
-    /* eslint-disable max-len, react/destructuring-assignment */
-    const filteredRows = parsedExpenses.filter((row: IExpense) => row.category.toLowerCase() === val.toLowerCase());
-    setExpenses(filteredRows);
+  const handleSortDirectionByDate = (e:React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    console.log(e);
+  };
+  const filterByCategory = (value: string) => {
+    const filteredRows = expenses.filter(
+      (row: Expense) => row.category.toLowerCase() === value.toLowerCase(),
+    );
+    setFiltering(true);
+    if (value === 'All') {
+      setFilteredExpenses(expenses);
+    } else {
+      setFilteredExpenses(filteredRows);
+    }
   };
 
   const filterByName = (searchedVal: string) => {
-    /* eslint-disable react/destructuring-assignment */
-    const filteredExpenses = parsedExpenses.filter((expense: IExpense) => expense.name.toLowerCase()
-      .includes(searchedVal.toLowerCase()));
-    setExpenses(filteredExpenses);
-  };
-
-  // const handleDateChange = (ranges) => {
-  //   console.log(ranges);
-  // };
-
-  const addNewExpense = (newExpense: IExpense):void => {
-    const {
-      id, name, category, amount, date,
-    } = newExpense;
-
-    const updatedExpenses = [...expenses, {
-      id, name, category, amount, date,
-    }];
-    setExpenses(updatedExpenses);
-    localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
+    setFiltering(true);
+    const filteredExps = expenses.filter(
+      (expense: Expense) => expense.name.toLowerCase()
+        .includes(searchedVal.toLowerCase())
+         || expense.category.toLowerCase().includes(searchedVal.toLowerCase()),
+    );
+    setFilteredExpenses(filteredExps);
+    if (searchedVal.length > 0) {
+      setFiltering(true);
+    } else {
+      setFiltering(false);
+    }
   };
 
   return (
     <Box id="expensesTable" component="section">
-      <AddExpenseForm handleAddingNewExpense={addNewExpense} />
-      <ToggleFiltersIcon handleToggleFilters={setFiltersOpened} />
+      <button
+        style={{
+          marginTop: '10rem', padding: '1rem', fontSize: '1.5rem', backgroundColor: '#25d291', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer',
+        }}
+        type="button"
+        onClick={() => {
+          setState({ ...state, expenses: [] });
+          setFilteredExpenses([]);
+        }}
+      >
+        Clear expenses
+      </button>
+      <NewExpenseForm />
+      <ToggleFiltersIcon handleToggleFilters={setFiltersOpened} open={filtersOpened} />
       {filtersOpened && (
         <Paper sx={{
           display: 'flex', p: 4, flexDirection: { xs: 'column', lg: 'row' }, justifyContent: 'center', alignItems: { lg: 'center' }, gap: '1rem',
         }}
         >
           <SearchForm handleSearch={filterByName} />
-          <FilterByCategory handleFilteringByCategory={handleFilteringByCategory} />
+          <FilterByCategory handleFilteringByCategory={filterByCategory} />
         </Paper>
       )}
       <Paper>
@@ -122,7 +155,12 @@ export default function ExpensesTable({ state }: ExpensesTableProps) {
                 </TableCell>
                 <TableCell align="center">
                   <Typography variant="h6">
-                    <Icon className="material-symbols-outlined">calendar_month</Icon>
+                    <Icon
+                      className="material-symbols-outlined"
+                      onClick={(e) => handleSortDirectionByDate(e)}
+                    >
+                      calendar_month
+                    </Icon>
                   </Typography>
                 </TableCell>
 
@@ -132,7 +170,7 @@ export default function ExpensesTable({ state }: ExpensesTableProps) {
                     <IconButton
                       data-sort="down"
                       sx={{ fontSize: '1rem' }}
-                      onClick={(e) => handleSortDirection(e)}
+                      onClick={(e) => handleSortDirectionByPrice(e)}
                       className="material-symbols-outlined"
                     >
                       arrow_downward
@@ -140,7 +178,7 @@ export default function ExpensesTable({ state }: ExpensesTableProps) {
                     <IconButton
                       data-sort="up"
                       sx={{ fontSize: '1rem' }}
-                      onClick={(e) => handleSortDirection(e)}
+                      onClick={(e) => handleSortDirectionByPrice(e)}
                       className="material-symbols-outlined"
                     >
                       arrow_upward
@@ -150,7 +188,7 @@ export default function ExpensesTable({ state }: ExpensesTableProps) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {expenses.map((row) => (
+              {(!filtering && !!expenses.length) ? expenses?.map((row) => (
                 <TableRow
                   key={row.id}
                   sx={{
@@ -171,13 +209,45 @@ export default function ExpensesTable({ state }: ExpensesTableProps) {
                     }
                     PLN
                   </TableCell>
+                  <TableCell>
+                    <IconButton onClick={() => handleDeleteExpense(row.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              )) : filteredExpenses?.map((row) => (
+                <TableRow
+                  key={row.id}
+                  sx={{
+                    '&:last-child td, &:last-child th': { border: 0 },
+                    textTransform: 'capitalize',
+                    '&:hover': { backgroundColor: '#25d29180' },
+                    transition: '.3s ease-out',
+                  }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="center">{row.category}</TableCell>
+                  <TableCell align="center">{row.date}</TableCell>
+                  <TableCell align="center">
+                    {
+                  row.amount
+                    }
+                    PLN
+                  </TableCell>
+                  <TableCell>
+                    <IconButton onClick={() => handleDeleteExpense(row.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       </Paper>
-      <Total expenses={[...parsedExpenses]} newCategory={newCategory} />
+      <Total expenses={[...expenses]} categoryFilter={categoryFilter} />
     </Box>
   );
 }

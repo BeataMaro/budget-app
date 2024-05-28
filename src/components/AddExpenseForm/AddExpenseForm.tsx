@@ -1,53 +1,41 @@
-import React, {
-  useState, useEffect,
-} from 'react';
+import React, { FormEvent, useState } from 'react';
 import { v4 } from 'uuid';
 import {
-  Box, TextField, Button, MenuItem,
+  Box, TextField, Button, MenuItem, FormControl,
 } from '@mui/material';
-import IExpense from '../../models/expense.ts';
-import * as initialCategories from '../../../initialCategories.json';
-
-interface ICategory {
-  id: string,
-  name: string,
-}
+import Expense from '../../models/expense.ts';
+import useLocalStorage from '../../ libs/hooks/useLocalStorage.tsx';
+import Category from '../../models/category.ts';
+import useStateContext from '../../ libs/hooks/useStateContext.tsx';
+// import NewExpenseForm from '../NewExpenseForm/NewExpenseForm.tsx';
 
 interface AddExpenseProps {
-  handleAddingNewExpense: (expense: IExpense) => void
+  handleAddingNewExpense: (expense: Expense) => void;
 }
 
-const baseCategories = initialCategories.initialCategories.map((catName: string) => ({
-  id: v4(),
-  name: catName,
-}));
-
 function AddExpenseForm({ handleAddingNewExpense }: AddExpenseProps) {
-  const storedCategories = localStorage.getItem('categories');
-
-  const parsedCategories = storedCategories ? JSON.parse(storedCategories) : baseCategories && localStorage.setItem('categories', JSON.stringify(baseCategories));
-  const [categories, setCategories] = useState<ICategory[]>(parsedCategories);
+  const { state, setState } = useStateContext();
+  const [categories, setCategories] = useLocalStorage<Category[]>('categories', state.categories);
   const [addingCategoryForm, setAddingCategoryForm] = useState<boolean>(false);
+  const [newCategory, setNewCategory] = useState<Category>({ id: '', name: '' });
 
-  const [newCategory, setNewCategory] = useState<ICategory>({ id: '', name: '' });
-  // const [categories, setCategories] = useState<ICategory[]>(categoriesDemo);
-
-  // function getCategories() {
-  //     state.map((expense) => setCategories([...categories, expense.category]))
-  // }
-
-  useEffect(() => {
-    localStorage.setItem('categories', JSON.stringify(categories));
-  }, [categories]);
+  // const newExpenseRef = useRef<HTMLInputElement>();
 
   function addNewCategory() {
     function addCategory() {
+      // const val = newCategoryRef.current!.value;
+      if (newCategory.name === '') return;
       setCategories([...categories, newCategory]);
-      localStorage.setItem('categories', JSON.stringify(categories));
       setAddingCategoryForm(false);
+      setState((prev) => ({ ...prev, categories: [...categories, newCategory] }));
+    }
+
+    function onsubmitForm(e: FormEvent<HTMLButtonElement>) {
+      e.preventDefault();
+      addCategory();
     }
     return (
-      <>
+      <FormControl>
         <TextField
           required
           name="expenseNewCategory"
@@ -58,19 +46,28 @@ function AddExpenseForm({ handleAddingNewExpense }: AddExpenseProps) {
             name: e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1),
           })}
         />
-        <Button onClick={() => addCategory()}>Add new category</Button>
-      </>
+        <Button
+          onClick={(e) => onsubmitForm(e)}
+        >
+          Add new category
+        </Button>
+      </FormControl>
     );
   }
 
   function addNewExpense(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
+    // empty expenseName field
+    if (form.expenseName.value === '') return;
     handleAddingNewExpense({
-      id: Date.now().toString(),
+      id: v4(),
       name: form.expenseName.value,
       category: form.expenseCategory.value,
       amount: form.expensePrice.value,
+      // amount: newExpenseCostRef.current!.value,
+      // [e.target.name]: e.target.value,
+      // name: form.name.value,
       date: new Date().toISOString().slice(0, 10),
     });
 
@@ -84,10 +81,17 @@ function AddExpenseForm({ handleAddingNewExpense }: AddExpenseProps) {
       name="newExpenseForm"
       noValidate
       sx={{
-        display: 'flex', p: 4, mt: '6rem', flexDirection: { xs: 'column', lg: 'row' }, justifyContent: 'center', gap: '1rem', alignItems: { lg: 'center' },
+        display: 'flex',
+        p: 4,
+        mt: '6rem',
+        flexDirection: { xs: 'column', lg: 'row' },
+        justifyContent: 'center',
+        gap: '1rem',
+        alignItems: { lg: 'center' },
       }}
       onSubmit={(e) => addNewExpense(e)}
     >
+
       <TextField
         required
         id="newExpenseName"
@@ -95,7 +99,15 @@ function AddExpenseForm({ handleAddingNewExpense }: AddExpenseProps) {
         label="Add your expense"
         variant="standard"
       />
-      <TextField required id="nexExpensePrice" type="number" name="expensePrice" label="Price" variant="standard" />
+      <TextField
+        required
+        id="exExpensePrice"
+        type="number"
+        name="expensePrice"
+        label="Price"
+        variant="standard"
+        inputProps={{ min: 0 }}
+      />
       <TextField
         id="newExpenseCategory"
         name="expenseCategory"
@@ -103,23 +115,24 @@ function AddExpenseForm({ handleAddingNewExpense }: AddExpenseProps) {
         select
         defaultValue="Food"
       >
-        {categories.map(({ id, name }) => (
-          <MenuItem key={id} value={name}>
-            {name}
-          </MenuItem>
-        ))}
+        {!!categories.length && categories
+          .filter((cat: Category) => cat.name !== 'All')
+          .map(({ id, name }) => (
+            <MenuItem key={id} value={name} onClick={() => setAddingCategoryForm(false)}>
+              {name}
+            </MenuItem>
+          ))}
         <MenuItem
-        /* eslint-disable max-len, no-confusing-arrow */
-          onClick={() => addingCategoryForm ? setAddingCategoryForm(false) : setAddingCategoryForm(true)}
-          key={78777}
-          value="newCategory"
+          onClick={() => setAddingCategoryForm(true)}
+          key={v4()}
+          value="Add new category"
         >
           Add new category...
         </MenuItem>
       </TextField>
       {addingCategoryForm && addNewCategory()}
-      <Button variant="outlined" type="submit">
-        Add
+      <Button variant="outlined" type="submit" disabled={addingCategoryForm}>
+        Add Expense
       </Button>
     </Box>
   );

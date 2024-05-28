@@ -1,45 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
-import IExpense from '../../models/expense.ts';
+import Expense from '../../models/expense.ts';
 
 type totalProps = {
-    newCategory: string,
-    expenses: IExpense[],}
+    categoryFilter: string,
+    expenses: Expense[],}
 
-function Total({ newCategory, expenses }: totalProps) {
+function Total({ categoryFilter, expenses }: totalProps) {
   const [total, setTotal] = useState<number>(0);
   const [totalCategory, setTotalCategory] = useState<number>(0);
 
-  const totalExpenses = (data: IExpense[]): void => {
+  const totalExpenses = (data: Expense[]): void => {
     const totalSum = data.reduce((acc, curr) => acc + Number(curr.amount), 0);
     localStorage.setItem('totalExpenses', JSON.stringify(totalSum));
     setTotal(totalSum);
   };
-  const totalExpensesOfCategory = (data: IExpense[]) => {
+  const totalExpensesOfCategory = (data: Expense[]) => {
     const sum = data.reduce((acc, curr) => acc + Number(curr.amount), 0);
     localStorage.setItem('totalExpensesOfCategory', JSON.stringify(sum));
     setTotalCategory(sum);
   };
 
   useEffect(() => {
-    if (newCategory.toLowerCase() !== 'all') {
+    if (categoryFilter.toLowerCase() !== 'all') {
       /* eslint-disable max-len */
-      const filteredRows = expenses.filter((row: IExpense) => row.category.toLowerCase() === newCategory.toLowerCase());
+      const filteredRows = expenses.filter((row: Expense) => row.category.toLowerCase() === categoryFilter.toLowerCase());
       totalExpensesOfCategory(filteredRows);
     }
     totalExpenses([...expenses]);
-  }, [expenses, newCategory]);
+  }, [expenses, categoryFilter]);
 
   return (
     <Box sx={{
       display: 'flex', flexDirection: 'column', alignItems: 'flex-end', py: 3,
     }}
     >
-      {newCategory !== 'All' && newCategory.length > 0 && (
+      {categoryFilter !== 'All' && categoryFilter.length > 0 && (
         <Typography variant="h5">
           Total cost of the&nbsp;
             {
-             newCategory.toLowerCase()
+             categoryFilter.toLowerCase()
             }
           :
           {

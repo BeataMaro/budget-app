@@ -10,5 +10,15 @@
     { "id": "8", "name": "fuel", "category": "Car", "amount": "320", "date": "2022-09-10" },
     { "id": "9", "name": "car wash", "category": "Car", "amount": "60", "date": "2022-09-10" },
     { "id": "10", "name": "chair", "category": "House", "amount": "2", "date": "2024-01-10" }
-  ]
+  ],
+  "categories": [
+    {"id": "11", "name": "All"},
+    {"id": "12", "name": "Food"},
+    {"id": "13", "name": "Car"},
+    {"id": "14", "name": "Hobby"},
+    {"id": "15", "name": "House"},
+    {"id": "16", "name": "Healthcare"},
+    {"id": "17", "name": "Animals"},
+    {"id": "18", "name": "Education"},
+    {"id": "19", "name": "Clothes"}  ]
 }

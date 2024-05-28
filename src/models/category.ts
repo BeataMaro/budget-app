@@ -1,5 +1,5 @@
-interface ICategory {
+type Category = {
     id: string,
     name: string,
   }
-export default ICategory;
+export default Category;

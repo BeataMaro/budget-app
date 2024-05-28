@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FormControl, IconButton } from '@mui/material';
 
 type ToggleFiltersIconProps = {
     handleToggleFilters: (val: boolean) => void,
+    open: boolean,
 }
 
-export default function ToggleFiltersIcon({ handleToggleFilters }: ToggleFiltersIconProps) {
-  const [filtersOpened, setFiltersOpened] = useState<boolean>(true);
+export default function ToggleFiltersIcon({ handleToggleFilters, open }: ToggleFiltersIconProps) {
   const toggleFilters = () => {
-    setFiltersOpened((prev) => !prev);
-    handleToggleFilters(filtersOpened);
+    const show = !open;
+    handleToggleFilters(show);
   };
   return (
     <FormControl sx={{

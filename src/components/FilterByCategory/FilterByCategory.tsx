@@ -1,50 +1,106 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
-  FormControl, InputLabel, MenuItem, Select, SelectChangeEvent,
-} from '@mui/material';
-import ICategory from '../../models/category.ts';
-import * as initialCategoriesSet from '../../../initialCategories.json';
+  useForm, Controller,
+} from 'react-hook-form';
+import { MenuItem, TextField } from '@mui/material';
+// import {
+//   FormControl, InputLabel, MenuItem, Select, SelectChangeEvent,
+// } from '@mui/material';
+// import useLocalStorage from '../../ libs/hooks/useLocalStorage.tsx';
+// import useStateContext from '../../ libs/hooks/useStateContext.tsx';
+// import FormInputText from '../AddExpenseForm/form-component/FormInputText.tsx';
+import useStateContext from '../../ libs/hooks/useStateContext.tsx';
 
 interface ISelectCategoryProps {
      handleFilteringByCategory: (val: string) => void
 }
 
+// type newCategoryType = {
+//   category: string,
+// }
+
 export default function FilterByCategory({ handleFilteringByCategory }: ISelectCategoryProps) {
-  const storedData = localStorage.getItem('categories');
-  const parsedData = storedData ? JSON.parse(storedData) : initialCategoriesSet;
+  const { state } = useStateContext();
+  // const [categories] = useLocalStorage<Category[]>('categories', state.categories);
+  const { categories } = state;
+  // const [selectedCategory, setCategory] = useState<string>('All');
+  // const [selectedCat, setSelectedCat] = useLocalStorage<string>('selected category',
+  // selectedCategory);
 
-  const [categories, setCategories] = useState<ICategory[]>(parsedData);
-  const [selectedCategory, setCategory] = useState<string>('All');
+  // useEffect(() => {
+  //   // setCategory(selectedCat);
+  //   console.log('Filter by category!');
+  // }, [categories, selectedCat]);
 
-  const filterByCategory = (event: SelectChangeEvent<string>) => {
-    const selectedValue = event.target.value;
-    setCategory(event.target.value);
-    handleFilteringByCategory(selectedValue);
-  };
+  // const filterByCategory = (event: SelectChangeEvent<string>) => {
+  // const filterByCategory = (val: string) => {
+  // const selectedValue = event.target.value;
+  // setSelectedCat(selectedValue);
+  // setSelectedCat(val);
+  // setState((prevState) => ({
+  //   categories: prevState.categories,
+  //   expenses: prevState.expenses.filter(
+  //     (row) => row.category.toLowerCase() === selectedValue.toLowerCase(),
+  //   ),
+  // }));
+  // handleFilteringByCategory(selectedValue);
+  // handleFilteringByCategory(val);
+  // };
+  const { control } = useForm({
+    defaultValues: {
+      category: '',
+    },
+  });
 
-  useEffect(() => {
-    const updateCategory = () => {
-      setCategories(JSON.parse(localStorage.getItem('categories')!));
-    };
-    updateCategory();
-  }, [categories]);
+  // const onSubmit: SubmitHandler<newCategoryType> = (data) => {
+  //   console.log(data);
+  //   filterByCategory(data.category);
+  // };
 
   return (
-    <FormControl sx={{ my: 3, minWidth: '4rem' }}>
-      <InputLabel htmlFor="categorySelect" id="categoryFilter">
-        Category
-      </InputLabel>
-      <Select
-        labelId="categorySelect"
-        id="categorySelect"
-        value={selectedCategory}
-        label={selectedCategory}
-        onChange={filterByCategory}
+    // <Box
+    //   component="form"
+    //   autoComplete="off"
+    //   name="searchCategoryForm"
+    //   noValidate
+    //   sx={{
+    //     display: 'flex',
+    //     p: 4,
+    //     mt: '6rem',
+    //     flexDirection: { xs: 'column', lg: 'row' },
+    //     justifyContent: 'center',
+    //     gap: '1rem',
+    //     alignItems: { lg: 'center' },
+    //   }}
+    //   onSubmit={handleSubmit(onSubmit)}
+    // >
+    <Controller
+      name="category"
+      control={control}
+      render={({ field }) => (
+      //  <FormInputText control={control} name="category" label="kategoria" />
+        <TextField
+        /* eslint-disable */
+            {...field}
+          onChange={(e) => handleFilteringByCategory(e.target.value)}
+          id="newExpenseCategory"
+          name="expenseCategory"
+          label="Kategoria"
+          select
+          defaultValue="All"
+          sx={{color: 'pink'}}
       >
-        {categories.length && categories.map(({ name, id }) => (
-          <MenuItem value={name} key={id}>{name}</MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+        {!!categories.length &&
+          categories
+          .map(({ id, name }) => (
+            <MenuItem key={id} value={name}>
+                {name}
+            </MenuItem>
+            ))}
+      </TextField>
+     )}/>
+    
+    // {/* <Button type="submit">ok</Button> */}
+    // </Box>
   );
 }

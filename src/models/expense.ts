@@ -1,4 +1,4 @@
-type IExpense = {
+type Expense = {
     id: string,
     name: string,
     category: string,
@@ -6,4 +6,4 @@ type IExpense = {
     date: string,
   }
 
-export default IExpense;
+export default Expense;
