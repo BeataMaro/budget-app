@@ -82,11 +82,11 @@ function NewExpenseForm() {
           {...field}
             id="newExpenseName"
             name="expenseName"
-            label="Nazwa"
+            label="Name"
             variant="standard"
           />}
       />
-      {errors.expenseName && <span>To pole jest wymagane!</span>}
+      {errors.expenseName && <span>The field is required!</span>}
       <Controller
         control={control}
         name='expensePrice'
@@ -97,12 +97,12 @@ function NewExpenseForm() {
         id="exExpensePrice"
         type="number"
         name="expensePrice"
-        label="Koszt"
+        label="Cost"
         variant="standard"
         inputProps={{ min: 0 }}
       />}
       />
-      {errors.expensePrice && <span>To pole jest wymagane!</span>}
+      {errors.expensePrice && <span>The field is required!</span>}
       <Controller
         control={control}
         name='expenseCategory'
@@ -111,12 +111,12 @@ function NewExpenseForm() {
             {...field}
             id="newExpenseCategory"
             name="expenseCategory"
-            label="Kategoria"
+            label="Category"
             select
             defaultValue="Food"
         >
             <MenuItem onClick={() => setAddingCategoryForm(true)}>
-              Dodaj nową kategorię...
+                Add new category...
             </MenuItem>
             {!!categories.length &&
               categories
@@ -130,7 +130,7 @@ function NewExpenseForm() {
         )}
       />
       <Button variant="outlined" type="submit" disabled={addingCategoryForm}>
-          Dodaj
+          Add
       </Button>
     </Box>
     {addingCategoryForm && <NewCategoryForm setAddingForm={setAddingCategoryForm}/>}

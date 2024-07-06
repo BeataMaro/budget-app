@@ -87,7 +87,7 @@ export default function NavBar() {
 
   return (
     <Box component="header" sx={{ display: 'flex' }}>
-      <AppBar component="nav" sx={{ px: 4, position: 'fixed' }}>
+      <AppBar component="nav" sx={{ px: 4, position: 'fixed', top: 0 }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <IconButton
             aria-label="open drawer"

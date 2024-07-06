@@ -48,10 +48,10 @@ function Total({ categoryFilter, expenses }: totalProps) {
           PLN
         </Typography>
       )}
-      <Typography variant="h5" sx={{ fontWeight: '800' }}>
+      <Typography variant="h5" sx={{ fontWeight: '800', p: 2 }}>
         Total expenses:
         { total }
-        PLN
+        zł
       </Typography>
     </Box>
   );

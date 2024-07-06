@@ -15,10 +15,6 @@ interface ISelectCategoryProps {
      handleFilteringByCategory: (val: string) => void
 }
 
-// type newCategoryType = {
-//   category: string,
-// }
-
 export default function FilterByCategory({ handleFilteringByCategory }: ISelectCategoryProps) {
   const { state } = useStateContext();
   // const [categories] = useLocalStorage<Category[]>('categories', state.categories);
@@ -58,34 +54,17 @@ export default function FilterByCategory({ handleFilteringByCategory }: ISelectC
   // };
 
   return (
-    // <Box
-    //   component="form"
-    //   autoComplete="off"
-    //   name="searchCategoryForm"
-    //   noValidate
-    //   sx={{
-    //     display: 'flex',
-    //     p: 4,
-    //     mt: '6rem',
-    //     flexDirection: { xs: 'column', lg: 'row' },
-    //     justifyContent: 'center',
-    //     gap: '1rem',
-    //     alignItems: { lg: 'center' },
-    //   }}
-    //   onSubmit={handleSubmit(onSubmit)}
-    // >
     <Controller
       name="category"
       control={control}
       render={({ field }) => (
-      //  <FormInputText control={control} name="category" label="kategoria" />
         <TextField
         /* eslint-disable */
             {...field}
           onChange={(e) => handleFilteringByCategory(e.target.value)}
           id="newExpenseCategory"
           name="expenseCategory"
-          label="Kategoria"
+          label="Category"
           select
           defaultValue="All"
           sx={{color: 'pink'}}
@@ -99,8 +78,5 @@ export default function FilterByCategory({ handleFilteringByCategory }: ISelectC
             ))}
       </TextField>
      )}/>
-    
-    // {/* <Button type="submit">ok</Button> */}
-    // </Box>
   );
 }

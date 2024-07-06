@@ -51,13 +51,13 @@ function NewCategoryForm({ setAddingForm }: INewCategoryProps) {
             required
             id="newExpenseName"
             name="expenseName"
-            label="Nazwa"
+            label="Name"
             variant="standard"
           />
         
           )}
         />
-      {errors.newExpenseCategory && <span>To pole jest wymagane!</span>}
+      {errors.newExpenseCategory && <span>The field is required!</span>}
         <Button variant="outlined" type="submit" disabled={isSubmitting}>
             Ok
         </Button>      

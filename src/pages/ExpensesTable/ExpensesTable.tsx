@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
+  Button,
   Icon,
   IconButton,
   Paper,
@@ -52,15 +53,25 @@ export default function ExpensesTable() {
     [state, filteredExpenses, expenses, categoryFilter, categories, localExpenses],
   );
 
-  function sortTable(data: Expense[], direction?: string): Expense[] {
+  function sortTable(data: Expense[], property: 'amount' | 'date', direction?: string): Expense[] {
     if (direction === 'up') {
-      return data.sort((a: Expense, b: Expense) => Number(a.amount) - Number(b.amount));
+      return data.sort((a: Expense, b: Expense) => Number(a[property]) - Number(b[property]));
     }
     if (direction === 'down') {
-      return data.sort((a, b) => Number(b.amount) - Number(a.amount));
+      return data.sort((a, b) => Number(b[property]) - Number(a[property]));
     }
     return data;
   }
+
+  // function sortTable(data: Expense[], direction?: string): Expense[] {
+  //   if (direction === 'up') {
+  //     return data.sort((a: Expense, b: Expense) => Number(a.amount) - Number(b.amount));
+  //   }
+  //   if (direction === 'down') {
+  //     return data.sort((a, b) => Number(b.amount) - Number(a.amount));
+  //   }
+  //   return data;
+  // }
 
   function handleDeleteExpense(rowId: string) {
     setLocalExpenses([...expenses].filter((exp: Expense) => exp.id !== rowId));
@@ -73,12 +84,28 @@ export default function ExpensesTable() {
   function handleSortDirectionByPrice(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     const target = e.target as HTMLButtonElement;
 
-    sortTable(expenses, target.dataset.sort);
+    sortTable(expenses, 'amount', target.dataset.sort);
     setFilteredExpenses([...expenses]);
   }
 
   const handleSortDirectionByDate = (e:React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-    console.log(e);
+    // const target = e.target as HTMLButtonElement;
+
+    // sortTable(expenses, 'date', target.dataset.sort);
+    const target = e.target as HTMLButtonElement;
+
+    if (target.dataset.sort === 'up') {
+      expenses.sort((a: Expense, b: Expense) => new Date(a.date).getTime()
+    - new Date(b.date).getTime());
+      target.dataset.sort = 'down';
+      setFilteredExpenses([...expenses]);
+    } else if (target.dataset.sort === 'down') {
+      expenses.sort((a: Expense, b: Expense) => new Date(b.date).getTime()
+    - new Date(a.date).getTime());
+      target.dataset.sort = 'up';
+
+      setFilteredExpenses([...expenses]);
+    }
   };
   const filterByCategory = (value: string) => {
     const filteredRows = expenses.filter(
@@ -108,10 +135,18 @@ export default function ExpensesTable() {
   };
 
   return (
-    <Box id="expensesTable" component="section">
-      <button
-        style={{
-          marginTop: '10rem', padding: '1rem', fontSize: '1.5rem', backgroundColor: '#25d291', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer',
+    <Box id="expensesTable" component="section" sx={{ mt: 12, textAlign: 'center' }}>
+      {/* clear expenses */}
+      <Button
+        sx={{
+          m: 'auto',
+          p: 2,
+          fontSize: '1.2rem',
+          backgroundColor: '#25d291',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
         }}
         type="button"
         onClick={() => {
@@ -120,7 +155,7 @@ export default function ExpensesTable() {
         }}
       >
         Clear expenses
-      </button>
+      </Button>
       <NewExpenseForm />
       <ToggleFiltersIcon handleToggleFilters={setFiltersOpened} open={filtersOpened} />
       {filtersOpened && (
@@ -156,6 +191,8 @@ export default function ExpensesTable() {
                 <TableCell align="center">
                   <Typography variant="h6">
                     <Icon
+                      data-property="calendar"
+                      data-sort="up"
                       className="material-symbols-outlined"
                       onClick={(e) => handleSortDirectionByDate(e)}
                     >
@@ -169,6 +206,7 @@ export default function ExpensesTable() {
                     <IconButton className="material-symbols-outlined">price_check</IconButton>
                     <IconButton
                       data-sort="down"
+                      data-property="amount"
                       sx={{ fontSize: '1rem' }}
                       onClick={(e) => handleSortDirectionByPrice(e)}
                       className="material-symbols-outlined"
@@ -177,6 +215,7 @@ export default function ExpensesTable() {
                     </IconButton>
                     <IconButton
                       data-sort="up"
+                      data-property="amount"
                       sx={{ fontSize: '1rem' }}
                       onClick={(e) => handleSortDirectionByPrice(e)}
                       className="material-symbols-outlined"
