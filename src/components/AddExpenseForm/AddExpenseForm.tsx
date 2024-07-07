@@ -101,7 +101,7 @@ function AddExpenseForm({ handleAddingNewExpense }: AddExpenseProps) {
       />
       <TextField
         required
-        id="exExpensePrice"
+        id="expensePrice"
         type="number"
         name="expensePrice"
         label="Price"

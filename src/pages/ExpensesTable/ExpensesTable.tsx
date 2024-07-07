@@ -36,9 +36,6 @@ export default function ExpensesTable() {
   const [filteredExpenses,
     setFilteredExpenses] = useState<Expense[]>(expenses);
 
-  // const [startDate, setStartDate] = useState('2022-07-16');
-  // const [endDate, setEndDate] = useState('2022-09-10');
-
   useEffect(
     () => {
       console.log(localExpenses);
@@ -47,13 +44,11 @@ export default function ExpensesTable() {
         setFilteredExpenses(expenses);
         console.log('All!');
       }
-      // setFilteredExpenses(expenses);
-      // console.log(expenses, categories);
     },
     [state, filteredExpenses, expenses, categoryFilter, categories, localExpenses],
   );
 
-  function sortTable(data: Expense[], property: 'amount' | 'date', direction?: string): Expense[] {
+  function sortTable(data: Expense[], property: 'amount', direction?: string): Expense[] {
     if (direction === 'up') {
       return data.sort((a: Expense, b: Expense) => Number(a[property]) - Number(b[property]));
     }
@@ -63,22 +58,13 @@ export default function ExpensesTable() {
     return data;
   }
 
-  // function sortTable(data: Expense[], direction?: string): Expense[] {
-  //   if (direction === 'up') {
-  //     return data.sort((a: Expense, b: Expense) => Number(a.amount) - Number(b.amount));
-  //   }
-  //   if (direction === 'down') {
-  //     return data.sort((a, b) => Number(b.amount) - Number(a.amount));
-  //   }
-  //   return data;
-  // }
-
   function handleDeleteExpense(rowId: string) {
     setLocalExpenses([...expenses].filter((exp: Expense) => exp.id !== rowId));
     setState({
       expenses: [...expenses].filter((exp: Expense) => exp.id !== rowId),
       categories: [...categories],
     });
+    console.log(expenses.length);
   }
 
   function handleSortDirectionByPrice(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) {
@@ -89,9 +75,6 @@ export default function ExpensesTable() {
   }
 
   const handleSortDirectionByDate = (e:React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-    // const target = e.target as HTMLButtonElement;
-
-    // sortTable(expenses, 'date', target.dataset.sort);
     const target = e.target as HTMLButtonElement;
 
     if (target.dataset.sort === 'up') {
@@ -136,26 +119,6 @@ export default function ExpensesTable() {
 
   return (
     <Box id="expensesTable" component="section" sx={{ mt: 12, textAlign: 'center' }}>
-      {/* clear expenses */}
-      <Button
-        sx={{
-          m: 'auto',
-          p: 2,
-          fontSize: '1.2rem',
-          backgroundColor: '#25d291',
-          color: 'white',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-        }}
-        type="button"
-        onClick={() => {
-          setState({ ...state, expenses: [] });
-          setFilteredExpenses([]);
-        }}
-      >
-        Clear expenses
-      </Button>
       <NewExpenseForm />
       <ToggleFiltersIcon handleToggleFilters={setFiltersOpened} open={filtersOpened} />
       {filtersOpened && (
@@ -170,7 +133,7 @@ export default function ExpensesTable() {
       <Paper>
         <TableContainer component={Paper}>
           <Typography variant="h4" sx={{ m: 3 }}>
-            Expenses
+            Your expenses
           </Typography>
           <Table
             stickyHeader
@@ -190,14 +153,14 @@ export default function ExpensesTable() {
                 </TableCell>
                 <TableCell align="center">
                   <Typography variant="h6">
-                    <Icon
+                    <IconButton
                       data-property="calendar"
                       data-sort="up"
                       className="material-symbols-outlined"
                       onClick={(e) => handleSortDirectionByDate(e)}
                     >
                       calendar_month
-                    </Icon>
+                    </IconButton>
                   </Typography>
                 </TableCell>
 
@@ -227,7 +190,7 @@ export default function ExpensesTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {(!filtering && !!expenses.length) ? expenses?.map((row) => (
+              {(!filtering && expenses.length + 1) ? expenses?.map((row) => (
                 <TableRow
                   key={row.id}
                   sx={{
@@ -285,6 +248,17 @@ export default function ExpensesTable() {
             </TableBody>
           </Table>
         </TableContainer>
+        {/* clear expenses */}
+        {!!expenses.length && (
+          <Button
+            onClick={() => {
+              setState({ ...state, expenses: [] });
+              setFilteredExpenses([]);
+            }}
+          >
+            Clear expenses
+          </Button>
+        )}
       </Paper>
       <Total expenses={[...expenses]} categoryFilter={categoryFilter} />
     </Box>

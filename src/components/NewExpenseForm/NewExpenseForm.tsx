@@ -1,10 +1,11 @@
+import React, { useState } from 'react';
 import {
   Box,
   Button,
   MenuItem,
   TextField,
+  Typography,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import Category from '../../models/category.ts';
@@ -30,14 +31,14 @@ function NewExpenseForm() {
   } = useForm<expenseInputs>({
     defaultValues: {
       expenseName: '',
-      expensePrice: 0,
+      expensePrice: 1,
       expenseCategory: 'Food',
     },
   });
 
-  useEffect(() => {
-    state.expenses.map((exp) => console.log(exp));
-  }, [state]);
+  // useEffect(() => {
+  //   state.expenses.map((exp) => console.log(exp));
+  // }, [state]);
 
   const onSubmitExpense: SubmitHandler<expenseInputs> = (data) => {
     const newExpense = {
@@ -56,6 +57,9 @@ function NewExpenseForm() {
 
   return (
     <>
+      <Typography variant="h4" sx={{ m: 2 }}>
+        New expense
+      </Typography>
       <Box
         component="form"
         autoComplete="off"
@@ -105,15 +109,18 @@ function NewExpenseForm() {
       {errors.expensePrice && <span>The field is required!</span>}
       <Controller
         control={control}
-        name='expenseCategory'
+        name="expenseCategory"
         render={({ field }) => (
           <TextField
             {...field}
             id="newExpenseCategory"
-            name="expenseCategory"
+            name="newExpenseCategory"
             label="Category"
             select
-            defaultValue="Food"
+            sx={{ width: 150 }}
+            InputLabelProps={{
+              shrink: true,
+            }}
         >
             <MenuItem onClick={() => setAddingCategoryForm(true)}>
                 Add new category...

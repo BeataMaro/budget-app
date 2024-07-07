@@ -3,12 +3,6 @@ import {
   useForm, Controller,
 } from 'react-hook-form';
 import { MenuItem, TextField } from '@mui/material';
-// import {
-//   FormControl, InputLabel, MenuItem, Select, SelectChangeEvent,
-// } from '@mui/material';
-// import useLocalStorage from '../../ libs/hooks/useLocalStorage.tsx';
-// import useStateContext from '../../ libs/hooks/useStateContext.tsx';
-// import FormInputText from '../AddExpenseForm/form-component/FormInputText.tsx';
 import useStateContext from '../../ libs/hooks/useStateContext.tsx';
 
 interface ISelectCategoryProps {
@@ -17,57 +11,37 @@ interface ISelectCategoryProps {
 
 export default function FilterByCategory({ handleFilteringByCategory }: ISelectCategoryProps) {
   const { state } = useStateContext();
-  // const [categories] = useLocalStorage<Category[]>('categories', state.categories);
   const { categories } = state;
-  // const [selectedCategory, setCategory] = useState<string>('All');
-  // const [selectedCat, setSelectedCat] = useLocalStorage<string>('selected category',
-  // selectedCategory);
-
-  // useEffect(() => {
-  //   // setCategory(selectedCat);
-  //   console.log('Filter by category!');
-  // }, [categories, selectedCat]);
-
-  // const filterByCategory = (event: SelectChangeEvent<string>) => {
-  // const filterByCategory = (val: string) => {
-  // const selectedValue = event.target.value;
-  // setSelectedCat(selectedValue);
-  // setSelectedCat(val);
-  // setState((prevState) => ({
-  //   categories: prevState.categories,
-  //   expenses: prevState.expenses.filter(
-  //     (row) => row.category.toLowerCase() === selectedValue.toLowerCase(),
-  //   ),
-  // }));
-  // handleFilteringByCategory(selectedValue);
-  // handleFilteringByCategory(val);
-  // };
-  const { control } = useForm({
+  const { control, setValue } = useForm({
     defaultValues: {
-      category: '',
+      categorySearch: 'All',
     },
   });
 
-  // const onSubmit: SubmitHandler<newCategoryType> = (data) => {
-  //   console.log(data);
-  //   filterByCategory(data.category);
-  // };
-
   return (
     <Controller
-      name="category"
       control={control}
+      name="categorySearch"
       render={({ field }) => (
         <TextField
         /* eslint-disable */
-            {...field}
-          onChange={(e) => handleFilteringByCategory(e.target.value)}
-          id="newExpenseCategory"
+          {...field}
+          onChange={(e) => {
+            const value = e.target.value;
+            field.onChange(value);
+            setValue('categorySearch', value);
+            handleFilteringByCategory(value);
+          }}
+          value={field.value}
+          sx={{ width: 150 }}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          id="expenseCategory"
           name="expenseCategory"
           label="Category"
           select
           defaultValue="All"
-          sx={{color: 'pink'}}
       >
         {!!categories.length &&
           categories
@@ -77,6 +51,6 @@ export default function FilterByCategory({ handleFilteringByCategory }: ISelectC
             </MenuItem>
             ))}
       </TextField>
-     )}/>
+    )}/>
   );
 }

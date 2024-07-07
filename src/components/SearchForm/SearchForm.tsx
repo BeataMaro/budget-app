@@ -31,8 +31,7 @@ function SearchForm({ handleSearch }: SearchProps) {
         <Input
           id="search-expense"
           type="search"
-          placeholder="Szukaj"
-          sx={{ px: 2, py: 1 }}
+          placeholder="Search"
           margin="dense"
           startAdornment={(
             <InputAdornment position="start">
